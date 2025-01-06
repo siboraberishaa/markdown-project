@@ -1,0 +1,710 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background: #f5f5f5;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+#newNote {
+  background: #333;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.notes-list {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.note-item {
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.note-item:hover {
+  background: #eee;
+}
+
+.note-item.active {
+  background: #e0e0e0;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+}
+
+.editor,
+.preview {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: block;
+}
+
+#markdownEditor {
+  width: 100%;
+  height: 100%;
+  border: none;
+  resize: none;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 14px;
+  padding: 1rem;
+  background: #f8f8f8;
+}
+
+#markdownEditor:focus {
+  outline: none;
+}
+
+.preview {
+  border-left: 1px solid #ddd;
+}
+
+.header-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#themeToggle {
+  background: #333;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.search-container {
+  padding: 1rem;
+  position: relative;
+}
+
+.search-container i {
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 2rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.note-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-note {
+  opacity: 0;
+  color: #ff4444;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.note-item:hover .delete-note {
+  opacity: 1;
+}
+
+.alert-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.alert-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.alert-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.alert-buttons button {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#alertCancel {
+  background: #eee;
+}
+
+#alertConfirm {
+  background: #ff4444;
+  color: white;
+}
+
+/* Dark theme styles */
+body.dark-theme {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+body.dark-theme .sidebar {
+  background: #2d2d2d;
+  border-right-color: #404040;
+}
+
+body.dark-theme .sidebar-header {
+  border-bottom-color: #404040;
+}
+
+body.dark-theme .note-item {
+  border-bottom-color: #404040;
+}
+
+body.dark-theme .note-item:hover {
+  background: #404040;
+}
+
+body.dark-theme .note-item.active {
+  background: #505050;
+}
+
+body.dark-theme #markdownEditor {
+  background: #2d2d2d;
+  color: #fff;
+}
+
+body.dark-theme .preview {
+  border-left-color: #404040;
+}
+
+body.dark-theme #searchInput {
+  background: #2d2d2d;
+  border-color: #404040;
+  color: #fff;
+}
+
+body.dark-theme .alert-box {
+  background: #2d2d2d;
+  color: #fff;
+}
+
+/* Mobile sidebar toggle */
+.sidebar-toggle {
+  display: none;
+  padding: 0.5rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-header {
+  display: none;
+  padding: 0 1rem;
+  border-bottom: 1px solid #ddd;
+  height: 60px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-toggle {
+  display: none;
+  padding: 0.5rem 1rem;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    position: relative;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background: #f5f5f5;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Ensure the close button is visible */
+  .sidebar-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 1.2rem;
+    order: -1; /* Move to the left */
+  }
+
+  /* Ensure the toggle button is visible */
+  .sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+  }
+
+  .content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .content-header {
+    display: flex;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+    padding: 1rem;
+  }
+
+  .view-toggle {
+    display: block;
+  }
+
+  .editor,
+  .preview {
+    flex: 0 0 100%;
+    display: none;
+  }
+
+  .editor.active,
+  .preview.active {
+    display: block;
+  }
+
+  /* Overlay for when sidebar is open */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  /* Add styles for sidebar close button */
+  .sidebar-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+
+  body.dark-theme .sidebar-close {
+    color: #fff;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .content-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .view-toggle {
+    display: block;
+  }
+
+  .editor,
+  .preview {
+    flex: 0 0 100%;
+    display: none;
+  }
+
+  .editor.active,
+  .preview.active {
+    display: block;
+  }
+}
+
+/* Dark theme additions */
+body.dark-theme .view-toggle {
+  background: #404040;
+}
+
+body.dark-theme .content-header {
+  border-bottom-color: #404040;
+}
+
+body.dark-theme .sidebar-toggle {
+  background: #404040;
+}
+
+/* Make sidebar full width on mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    left: -100%;
+    background: #f5f5f5;
+  }
+
+  /* Ensure content doesn't overflow */
+  .content {
+    flex-direction: column;
+    height: calc(100vh - 60px); /* Account for content header */
+  }
+
+  .content-header {
+    height: 60px;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+  }
+
+  .editor,
+  .preview {
+    flex: 1;
+    height: calc(100vh - 60px);
+  }
+
+  #markdownEditor {
+    height: 100%;
+  }
+
+  /* Improve mobile buttons */
+  .view-toggle {
+    padding: 0.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .sidebar-toggle {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* Improve search container on mobile */
+  .search-container {
+    padding: 0.8rem;
+    position: sticky;
+    top: 0;
+    background: #f5f5f5;
+    z-index: 10;
+  }
+
+  #searchInput {
+    height: 40px;
+  }
+
+  /* Improve header controls on mobile */
+  .sidebar-header {
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    background: #f5f5f5;
+    z-index: 11;
+  }
+
+  .header-controls {
+    gap: 0.8rem;
+  }
+
+  .header-controls button {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Improve notes list scrolling */
+  .notes-list {
+    height: calc(100vh - 140px); /* Account for header and search */
+    overflow-y: auto;
+  }
+
+  .note-item {
+    padding: 1rem;
+    min-height: 60px;
+  }
+
+  /* Make delete button always visible on mobile */
+  .delete-note {
+    opacity: 1;
+    padding: 0.5rem;
+  }
+}
+
+/* Dark theme mobile adjustments */
+@media (max-width: 768px) {
+  body.dark-theme .content-header {
+    background: #1a1a1a;
+  }
+
+  body.dark-theme .sidebar-header,
+  body.dark-theme .search-container {
+    background: #2d2d2d;
+  }
+}
+
+/* Tablet specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .content-header {
+    height: 60px;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+  }
+
+  .editor,
+  .preview {
+    height: calc(100vh - 60px);
+  }
+
+  .view-toggle {
+    padding: 0.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
+
+/* Fix scrolling issues */
+html,
+body {
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+
+.container {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Ensure proper markdown preview scrolling */
+.preview {
+  overflow-y: auto;
+  word-wrap: break-word;
+}
+
+.preview img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Add this to hide the close button by default */
+.sidebar-close {
+  display: none; /* Hide by default */
+}
+
+/* Only show the close button on mobile */
+@media (max-width: 768px) {
+  .sidebar-close {
+    display: flex; /* Show on mobile */
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 1.2rem;
+    order: -1;
+  }
+}
+
+/* Update the view-toggle and sidebar-toggle styles */
+.view-toggle,
+.sidebar-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .content-header {
+    display: flex;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+    padding: 1rem;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .view-toggle,
+  .sidebar-toggle {
+    display: flex;
+  }
+
+  /* Remove any conflicting size definitions */
+  .sidebar-toggle {
+    position: static; /* Remove any absolute positioning */
+    bottom: auto;
+    right: auto;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Update dark theme styles for both buttons */
+body.dark-theme .view-toggle,
+body.dark-theme .sidebar-toggle {
+  background: #404040;
+}
+
+/* Only hide and toggle display on mobile/tablet */
+@media (max-width: 1024px) {
+  .editor,
+  .preview {
+    flex: 0 0 100%;
+    display: none; /* Hide both by default on mobile/tablet */
+  }
+
+  .editor.active,
+  .preview.active {
+    display: block; /* Show only active one on mobile/tablet */
+  }
+}
+
+/* Ensure proper split view on larger screens */
+@media (min-width: 1025px) {
+  .content {
+    display: flex;
+  }
+
+  .editor,
+  .preview {
+    flex: 1;
+    display: block;
+  }
+
+  /* Hide the view toggle button on larger screens */
+  .view-toggle {
+    display: none;
+  }
+}
